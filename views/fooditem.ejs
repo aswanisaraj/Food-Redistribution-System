@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Records</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .record {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .record:last-child {
+            border-bottom: none;
+        }
+
+        .record h2 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+
+        .record p {
+            margin: 5px 0;
+        }
+
+        .container button {
+            width: 20%;
+            padding: 10px;
+            background-color: rgb(25, 123, 236);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background-color: rgb(15, 92, 178);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <% for (let i=0; i < data.length; i++) { %>
+            <div class="record">
+                <h2>Record <%= i + 1 %>
+                </h2>
+                <p><strong>Food Name:</strong>
+                    <%= data[i].fname %>
+                </p>
+                <p><strong>Quantity:</strong>
+                    <%= data[i].quantity %>
+                </p>
+                <p><strong>Expiry Date:</strong>
+                    <%= data[i].expirydate %>
+                </p>
+                <p><strong>Address:</strong>
+                    <%= data[i].address %>
+                </p>
+                <p><strong>Donor Name:</strong>
+                    <%= data[i].dname %>
+                </p>
+                <p><strong>Donor Contact:</strong>
+                    <%= data[i].contact %>
+                </p>
+                <!-- Add the ID to the button -->
+                <button class="add-to-cart" data-id="<%= data[i].fid %>">Add to Cart</button>
+            </div>
+            <% } %>
+    </div>
+
+    <script>
+        // JavaScript for handling the "Add to Cart" functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.add-to-cart');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const recordId = button.getAttribute('data-id');
+                    fetch('/delete-record', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: recordId })
+                    })
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
